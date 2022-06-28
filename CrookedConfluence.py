@@ -8,7 +8,6 @@ contentSet = set()
 # export HTTP_PROXY="http://127.0.0.1:8080"
 # export HTTPS_PROXY="http://127.0.0.1:8080"
 
-
 form_token_headers = {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         "X-Atlassian-Token": "no-check",
@@ -69,17 +68,13 @@ def searchKeyWords(path, access_token, cURL, default_headers, limit):
                         pageId = ""
                         id_and_name = ""
                         contentId = results['content']['id']
-                        pageId_url = results['url']
+                        pageId_url = results['content']['_links']['webui']
                         page_name = results['content']['title']
                         # Some results will have a pageId and some only a contentId.
                         # Need pageId if it exists, otherwise use contentId
-                        if "pageId=" in pageId_url:
-                            pageId = pageId_url.split('pageId=')[1].split('&')[0]
-                            id_and_name = pageId + "," + page_name
-                            contentSet.add(id_and_name)
-                        else:
-                            id_and_name = contentId + "," + page_name
-                            contentSet.add(id_and_name)
+
+                        id_and_name = pageId_url + "," + page_name
+                        contentSet.add(id_and_name)
                     except Exception as e:
                         print("Error: " + str(e))
                 start_point += 250
@@ -94,7 +89,7 @@ def searchKeyWords(path, access_token, cURL, default_headers, limit):
     print("[*] Compiled set of %i unique pages to download from your search" % len(contentSet))
 
 
-def saveContent(cURL):
+def saveContent(ogURL):
     print("[*] Saving content to file")
     save_path = './loot'
     file_name = "confluence_content.txt"
@@ -103,9 +98,9 @@ def saveContent(cURL):
     for page in contentSet:
         pageId = page.split(",")[0]
         pageName = page.split(",")[1]
-        q = "/rest/api/content/" + pageId
-        URL = cURL + q
-        f.write(URL +" "+ pageName + "\n")
+        q = pageId
+        URL = ogURL + q
+        f.write(URL +"  -   "+ pageName + "\n")
     f.close()
     print("[*] Saved content to file")
 
@@ -185,6 +180,8 @@ def main():
     # Strip trailing / from URL if it has one
     if cURL.endswith('/'):
         cURL = cURL[:-1]
+    
+    ogURL = cURL
 
     auth = str('Bearer ' + access_token)
     default_headers = {
@@ -197,7 +194,7 @@ def main():
         form_token_headers['User-Agent'] = user_agent
 
     searchKeyWords(dict_path, access_token, cURL, default_headers, limit)
-    saveContent(cURL)
+    saveContent(ogURL)
 
 if __name__ == "__main__":
     main()

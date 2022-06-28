@@ -1,0 +1,4 @@
+ConsumerKey
+ConsumerSecret
+DB_USERNAME
+HEROKU_API_KEY

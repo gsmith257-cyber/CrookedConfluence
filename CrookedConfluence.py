@@ -73,7 +73,7 @@ def searchKeyWords(path, access_token, cURL, default_headers, limit):
                         # Some results will have a pageId and some only a contentId.
                         # Need pageId if it exists, otherwise use contentId
 
-                        id_and_name = pageId_url + "," + page_name
+                        id_and_name = pageId_url + "," + page_name + "," + search_term
                         contentSet.add(id_and_name)
                     except Exception as e:
                         print("Error: " + str(e))
@@ -98,9 +98,10 @@ def saveContent(ogURL):
     for page in contentSet:
         pageId = page.split(",")[0]
         pageName = page.split(",")[1]
+        searchTerm = page.split(",")[2]
         q = pageId
         URL = ogURL + q
-        f.write(URL +"  -   "+ pageName + "\n")
+        f.write(URL + "\n" + "      " + pageName + " - Found using term: " + searchTerm +"\n")
     f.close()
     print("[*] Saved content to file")
 

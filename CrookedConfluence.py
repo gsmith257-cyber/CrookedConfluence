@@ -114,7 +114,7 @@ def main():
     user_agent = ""
 
     # usage
-    usage = '\nusage: python3 conf_thief.py [-h] -c <TARGET URL> -u <Target Username> -p <API ACCESS TOKEN> -d <DICTIONARY FILE PATH> [-a] "<UA STRING> [-l] <limit of results>"'
+    usage = '\nusage: python3 CrookedConfluence.py [-h] -c <TARGET URL> -u <Target Username> -p <API ACCESS TOKEN> -d <DICTIONARY FILE PATH> [-a] "<UA STRING> [-l] <limit of results>"'
 
     #help
     help = '\nThis Module will connect to Confluence\'s API using an access token, '

@@ -114,7 +114,7 @@ def main():
     user_agent = ""
 
     # usage
-    usage = '\nusage: python3 CrookedConfluence.py [-h] -c <TARGET URL> -u <Target Username> -p <API ACCESS TOKEN> -d <DICTIONARY FILE PATH> [-a] "<UA STRING> [-l] <limit of results>"'
+    usage = '\nusage: python3 CrookedConfluence.py [-h] -c <TARGET URL> -u <Target Username> -p <API ACCESS TOKEN> -d <DICTIONARY FILE PATH> [-a] <UA STRING> [-l] <limit of results (Default: 100)>'
 
     #help
     help = '\nThis Module will connect to Confluence\'s API using an access token, '
@@ -161,6 +161,8 @@ def main():
             user_agent = arg
         if opt in ("-l", "--limit"):
             limit = int(arg)
+        else:
+            limit = 100
 
     # check for mandatory arguments
 
